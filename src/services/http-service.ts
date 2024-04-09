@@ -12,6 +12,15 @@ export class HttpService {
         });
     }
 
+    public async getCsv(url: string | URL): Promise<Response> {
+        return await fetch(url.toString(), {
+            method: 'get',
+            headers: {
+                Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+            },
+        });
+    }
+
     public async post(url: string | URL, authorization: string, body?: object): Promise<Response> {
         return await fetch(url.toString(), {
             method: 'post',

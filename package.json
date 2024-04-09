@@ -1,8 +1,8 @@
 {
-    "name": "my-bot",
+    "name": "song-search-bot",
     "version": "1.0.0",
-    "author": "Kevin Novak",
-    "description": "A discord.js bot template written with TypeScript",
+    "author": "Kas-tle",
+    "description": "A discord.js bot written with TypeScript",
     "license": "MIT",
     "private": true,
     "engines": {

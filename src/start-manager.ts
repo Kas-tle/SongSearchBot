@@ -5,6 +5,7 @@ import 'reflect-metadata';
 import { GuildsController, RootController, ShardsController } from './controllers/index.js';
 import { Job, UpdateServerCountJob } from './jobs/index.js';
 import { Api } from './models/api.js';
+import { Content } from './models/content.js';
 import { Manager } from './models/manager.js';
 import { HttpService, JobService, Logger, MasterApiService } from './services/index.js';
 import { MathUtils, ShardUtils } from './utils/index.js';
@@ -58,6 +59,9 @@ async function start(): Promise<void> {
         totalShards,
         shardList,
     });
+
+    // Content
+    await Content.updateSongs();
 
     // Jobs
     let jobs: Job[] = [

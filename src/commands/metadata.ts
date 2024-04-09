@@ -69,6 +69,25 @@ export const ChatCommandMetadata: {
         dm_permission: true,
         default_member_permissions: undefined,
     },
+    SEARCH: {
+        type: ApplicationCommandType.ChatInput,
+        name: Lang.getRef('chatCommands.search', Language.Default),
+        name_localizations: Lang.getRefLocalizationMap('chatCommands.search'),
+        description: Lang.getRef('commandDescs.search', Language.Default),
+        description_localizations: Lang.getRefLocalizationMap('commandDescs.search'),
+        dm_permission: true,
+        default_member_permissions: undefined,
+        options: [
+            {
+                ...Args.SEARCH_QUERY,
+                required: true,
+            },
+            {
+                ...Args.SEARCH_TYPE,
+                required: false,
+            }
+        ],
+    }
 };
 
 export const MessageCommandMetadata: {

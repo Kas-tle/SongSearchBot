@@ -3,7 +3,7 @@ import { Options, Partials } from 'discord.js';
 import { createRequire } from 'node:module';
 
 import { Button } from './buttons/index.js';
-import { DevCommand, HelpCommand, InfoCommand, TestCommand } from './commands/chat/index.js';
+import { DevCommand, HelpCommand, InfoCommand, TestCommand, SearchCommand } from './commands/chat/index.js';
 import {
     ChatCommandMetadata,
     Command,
@@ -28,10 +28,12 @@ import { Reaction } from './reactions/index.js';
 import {
     CommandRegistrationService,
     EventDataService,
+    HttpService,
     JobService,
     Logger,
 } from './services/index.js';
 import { Trigger } from './triggers/index.js';
+import { Content } from './models/content.js';
 
 const require = createRequire(import.meta.url);
 let Config = require('../config/config.json');
@@ -60,6 +62,7 @@ async function start(): Promise<void> {
         new HelpCommand(),
         new InfoCommand(),
         new TestCommand(),
+        new SearchCommand(),
 
         // Message Context Commands
         new ViewDateSent(),
@@ -111,6 +114,9 @@ async function start(): Promise<void> {
         reactionHandler,
         new JobService(jobs)
     );
+    
+    // Content
+    await Content.updateSongs();
 
     // Register
     if (process.argv[2] == 'commands') {

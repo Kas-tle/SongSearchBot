@@ -54,6 +54,12 @@
             "test": {
                 "description": "Test command works!"
             },
+            "searchResults": {
+                "title": "Results"
+            },
+            "noResults": {
+                "description": "No results found."
+            },
             "viewDateJoined": {
                 "description": "{{TARGET}} joined on {{DATE}}!"
             },
@@ -192,7 +198,8 @@
             "dev": "dev",
             "help": "help",
             "info": "info",
-            "test": "test"
+            "test": "test",
+            "search": "search"
         },
         "userCommands": {
             "viewDateJoined": "View Date Joined"
@@ -202,18 +209,23 @@
         },
         "arguments": {
             "command": "command",
-            "option": "option"
+            "option": "option",
+            "query": "query",
+            "type": "type"
         },
         "commandDescs": {
             "dev": "Developer use only.",
             "help": "Find help or contact support.",
             "info": "View bot info.",
-            "test": "Run the test command."
+            "test": "Run the test command.",
+            "search": "Search for songs."
         },
         "argDescs": {
             "devCommand": "Command.",
             "helpOption": "Option.",
-            "infoOption": "Option."
+            "infoOption": "Option.",
+            "searchQuery": "Query.",
+            "searchType": "Type."
         },
         "fields": {
             "commands": "Commands",
@@ -281,6 +293,11 @@
         "infoOptions": {
             "about": "About",
             "translate": "Translate"
+        },
+        "searchTypes": {
+            "title": "Title",
+            "artist": "Artist",
+            "all": "All"
         },
         "yesNo": {
             "yes": "Yes",
