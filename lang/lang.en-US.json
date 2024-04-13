@@ -7,52 +7,13 @@
                 "fields": [
                     {
                         "name": "Important {{REF:fields.commands}}",
-                        "value": ["{{CMD_LINK_HELP}} - {{REF:commandDescs.help}}"]
+                        "value": ["{{CMD_LINK_SEARCH}} - {{REF:commandDescs.search}}"]
                     },
                     {
                         "name": "{{REF:fields.links}}",
                         "value": ["{{REF:links.docsEmbed}}", "{{REF:links.supportEmbed}}"]
                     }
                 ]
-            },
-            "helpContactSupport": {
-                "title": "Help - {{REF:helpOptions.contactSupport}}",
-                "description": [
-                    "Have a question or feedback? Join our support server at the link below!"
-                ],
-                "fields": [
-                    {
-                        "name": "{{REF:fields.links}}",
-                        "value": ["{{REF:links.supportEmbed}}"]
-                    }
-                ]
-            },
-            "helpCommands": {
-                "title": "Help - {{REF:helpOptions.commands}}",
-                "fields": [
-                    {
-                        "name": "Commands",
-                        "value": [
-                            "To see the available commands, just type `/` and select the bot from the left side. You can then scroll through all available commands. Some commands may be hidden if you don't have permission to view them.",
-                            "",
-                            "{{CMD_LINK_TEST}} - {{REF:commandDescs.test}}",
-                            "{{CMD_LINK_INFO}} - {{REF:commandDescs.info}}"
-                        ]
-                    },
-                    {
-                        "name": "Command Permissions",
-                        "value": [
-                            "Want to restrict commands to certain roles, users, or channels? Set up permissions in the bot's integration page by going to **Server Settings** > **Integrations**, and then **Manage** for this bot."
-                        ]
-                    },
-                    {
-                        "name": "{{REF:fields.links}}",
-                        "value": ["{{REF:links.docsEmbed}}", "{{REF:links.supportEmbed}}"]
-                    }
-                ]
-            },
-            "test": {
-                "description": "Test command works!"
             },
             "searchResults": {
                 "title": "Results"
@@ -192,13 +153,11 @@
             "translators": "[TranslatorName#1234](https://github.com/)"
         },
         "bot": {
-            "description": "{{REF:links.templateEmbed}} helps give developers a starting point for new Discord bots, so that much of the initial setup can be avoided and developers can instead focus on meaningful bot features."
+            "description": "{{REF:links.templateEmbed}} searches for songs in a google spreasheet."
         },
         "chatCommands": {
             "dev": "dev",
-            "help": "help",
             "info": "info",
-            "test": "test",
             "search": "search"
         },
         "userCommands": {
@@ -215,14 +174,11 @@
         },
         "commandDescs": {
             "dev": "Developer use only.",
-            "help": "Find help or contact support.",
             "info": "View bot info.",
-            "test": "Run the test command.",
             "search": "Search for songs."
         },
         "argDescs": {
             "devCommand": "Command.",
-            "helpOption": "Option.",
             "infoOption": "Option.",
             "searchQuery": "Query.",
             "searchType": "Type."
@@ -282,14 +238,6 @@
         "devCommandNames": {
             "info": "info"
         },
-        "helpOptions": {
-            "contactSupport": "Contact Support",
-            "commands": "Commands"
-        },
-        "helpOptionDescs": {
-            "contactSupport": "❓ {{REF:helpOptions.contactSupport}} ❓",
-            "commands": "{{REF:helpOptions.commands}} -- What commands are there? How do I restrict who is allowed to use commands?"
-        },
         "infoOptions": {
             "about": "About",
             "translate": "Translate"
@@ -317,7 +265,7 @@
             "inviteEmbed": "[Invite {{COM:bot.name}} to a Server!]({{COM:links.invite}})",
             "sourceEmbed": "[View Source Code]({{COM:links.source}})",
             "supportEmbed": "[Join Support Server]({{COM:links.support}})",
-            "templateEmbed": "[Discord Bot TypeScript Template]({{COM:links.template}})",
+            "templateEmbed": "[Ashley Too]({{COM:links.template}})",
             "termsEmbed": "[View Terms of Service]({{COM:links.terms}})",
             "voteEmbed": "[Vote for {{COM:bot.name}}!]({{COM:links.vote}})"
         }

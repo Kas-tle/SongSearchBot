@@ -8,11 +8,13 @@ import { InteractionUtils } from '../../utils/index.js';
 import { Command, CommandDeferType } from '../index.js';
 import { SearchType } from '../../enums/search-type.js';
 import { Content, Song } from '../../models/content.js';
+import { match } from 'assert';
+import { PageUtils } from '../../utils/page-utils.js';
 
 export class SearchCommand implements Command {
     public names = [Lang.getRef('chatCommands.search', Language.Default)];
     public cooldown = new RateLimiter(1, 5000);
-    public deferType = CommandDeferType.HIDDEN;
+    public deferType = CommandDeferType.PUBLIC;
     public requireClientPerms: PermissionsString[] = [];
 
     public async execute(intr: ChatInputCommandInteraction, data: EventData): Promise<void> {
@@ -23,7 +25,7 @@ export class SearchCommand implements Command {
 
         Logger.info(`Searching for ${args.query} by ${args.type}...`);
 
-        let embed: EmbedBuilder;
+        const embeds: EmbedBuilder[] = [];
         let matches: Song[];
 
         switch (args.type) {
@@ -40,25 +42,75 @@ export class SearchCommand implements Command {
                 break;
             }
             default: {
+                args.type = SearchType.ALL;
                 matches = Content.allSearchSongs(args.query);
                 break;
             }
         }
 
         if (matches.length === 0) {
-            embed = Lang.getEmbed('displayEmbeds.noResults', data.lang);
+            embeds[0] = Lang.getEmbed('displayEmbeds.noResults', data.lang);
         } else {
-            embed = Lang.getEmbed('displayEmbeds.searchResults', data.lang);
+            let embedIndex = 0;
+            embeds[embedIndex] = Lang.getEmbed('displayEmbeds.searchResults', data.lang);
+            // Group matches by artist
+            const results: Map<string, string[]> = new Map();
+
             for (let song of matches) {
-                embed.addFields([
-                    {
-                        name: song.title,
-                        value: song.artist,
-                    },
-                ]);
+                if (!results.has(song.artist)) {
+                    results.set(song.artist, []);
+                }
+                results.get(song.artist).push(song.title);
+            }
+
+            // Add fields to embed
+            let fieldsAdded = 0;
+            let linesAdded = 0;
+            const MAX_LINES = 30;
+            const MAX_FIELDS = 25;
+            for (let [artist, titles] of results) {
+                if (fieldsAdded >= MAX_FIELDS || linesAdded >= MAX_LINES) {
+                    ++embedIndex;
+                    fieldsAdded = 0;
+                    linesAdded = 0;
+                }
+
+                linesAdded += 1;
+                let value = '';
+
+                for (let title of titles) {
+                    if (linesAdded >= MAX_LINES && value.length > 0) {
+                        if (!embeds[embedIndex]) {
+                            embeds[embedIndex] = Lang.getEmbed('displayEmbeds.searchResults', data.lang);
+                        }
+                        embeds[embedIndex].addFields([{ name: artist, value }]);
+                        ++embedIndex;
+                        fieldsAdded = 0;
+                        value = '';
+                        linesAdded = 0;
+                    }
+                    value += `- ${title}\n`;
+                    ++linesAdded;
+                }
+
+                if (!embeds[embedIndex]) {
+                    embeds[embedIndex] = Lang.getEmbed('displayEmbeds.searchResults', data.lang);
+                }
+
+                embeds[embedIndex].addFields([{ name: artist, value }]);
+                ++fieldsAdded;
+            }
+
+            if (embeds.length > 1) {
+                for (let i = 0; i < embeds.length; i++) {
+                    embeds[i].setFooter({
+                        text: `(${i + 1}/${embeds.length}) • query=${args.query} • type=${args.type.toLowerCase()} • songs=${matches.length} • artists=${results.size}`,
+                    });
+                }
+                new PageUtils(embeds, intr);
+            } else {
+                await InteractionUtils.send(intr, embeds[0]);
             }
         }
-        
-        await InteractionUtils.send(intr, embed);
     }
 }

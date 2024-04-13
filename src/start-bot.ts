@@ -3,7 +3,7 @@ import { Options, Partials } from 'discord.js';
 import { createRequire } from 'node:module';
 
 import { Button } from './buttons/index.js';
-import { DevCommand, HelpCommand, InfoCommand, TestCommand, SearchCommand } from './commands/chat/index.js';
+import { DevCommand, SearchCommand } from './commands/chat/index.js';
 import {
     ChatCommandMetadata,
     Command,
@@ -59,9 +59,6 @@ async function start(): Promise<void> {
     let commands: Command[] = [
         // Chat Commands
         new DevCommand(),
-        new HelpCommand(),
-        new InfoCommand(),
-        new TestCommand(),
         new SearchCommand(),
 
         // Message Context Commands

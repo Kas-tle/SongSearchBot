@@ -33,10 +33,10 @@ export class GuildJoinHandler implements EventHandler {
             await MessageUtils.send(
                 notifyChannel,
                 Lang.getEmbed('displayEmbeds.welcome', data.langGuild, {
-                    CMD_LINK_HELP: FormatUtils.commandMention(
+                    CMD_LINK_SEARCH: FormatUtils.commandMention(
                         await ClientUtils.findAppCommand(
                             guild.client,
-                            Lang.getRef('chatCommands.help', Language.Default)
+                            Lang.getRef('chatCommands.search', Language.Default)
                         )
                     ),
                 }).setAuthor({
@@ -51,10 +51,10 @@ export class GuildJoinHandler implements EventHandler {
             await MessageUtils.send(
                 owner.user,
                 Lang.getEmbed('displayEmbeds.welcome', data.lang, {
-                    CMD_LINK_HELP: FormatUtils.commandMention(
+                    CMD_LINK_SEARCH: FormatUtils.commandMention(
                         await ClientUtils.findAppCommand(
                             guild.client,
-                            Lang.getRef('chatCommands.help', Language.Default)
+                            Lang.getRef('chatCommands.search', Language.Default)
                         )
                     ),
                 }).setAuthor({

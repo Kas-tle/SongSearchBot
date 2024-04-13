@@ -1,4 +1,7 @@
 import {
+    APIActionRowComponent,
+    APIMessageActionRowComponent,
+    ActionRowData,
     ApplicationCommandOptionChoiceData,
     AutocompleteInteraction,
     CommandInteraction,
@@ -8,11 +11,15 @@ import {
     InteractionReplyOptions,
     InteractionResponse,
     InteractionUpdateOptions,
+    JSONEncodable,
     Message,
+    MessageActionRowComponentBuilder,
+    MessageActionRowComponentData,
     MessageComponentInteraction,
     ModalSubmitInteraction,
     WebhookMessageEditOptions,
 } from 'discord.js';
+import { Logger } from '../services/logger.js';
 
 const IGNORED_ERRORS = [
     DiscordApiErrors.UnknownMessage,
@@ -24,6 +31,11 @@ const IGNORED_ERRORS = [
     DiscordApiErrors.ReactionWasBlocked, // User blocked bot or DM disabled
     DiscordApiErrors.MaximumActiveThreads,
 ];
+
+type Component = 
+    | JSONEncodable<APIActionRowComponent<APIMessageActionRowComponent>>
+    | ActionRowData<MessageActionRowComponentData | MessageActionRowComponentBuilder>
+    | APIActionRowComponent<APIMessageActionRowComponent>
 
 export class InteractionUtils {
     public static async deferReply(
@@ -68,6 +80,7 @@ export class InteractionUtils {
     public static async send(
         intr: CommandInteraction | MessageComponentInteraction | ModalSubmitInteraction,
         content: string | EmbedBuilder | InteractionReplyOptions,
+        components: Component[] = null,
         hidden: boolean = false
     ): Promise<Message> {
         try {
@@ -80,11 +93,13 @@ export class InteractionUtils {
             if (intr.deferred || intr.replied) {
                 return await intr.followUp({
                     ...options,
+                    components,
                     ephemeral: hidden,
                 });
             } else {
                 return await intr.reply({
                     ...options,
+                    components,
                     ephemeral: hidden,
                     fetchReply: true,
                 });

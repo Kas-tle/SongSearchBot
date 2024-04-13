@@ -1,3 +1,4 @@
+import { parse } from 'csv-parse/sync';
 import Config from '../../config/config.json' with { type: "json" };
 import { HttpService, Logger } from '../services/index.js';
 
@@ -68,16 +69,18 @@ export class Content {
 
             Logger.info(`Text: ${text}`);
 
-            let lines = text.split('\n');
-            for (let line of lines) {
-                let [title, artist] = line.split(',');
-                title = title.slice(1, -1);
-                artist = artist.slice(1, -1);
+            const records: [string, string][] = parse(text, { trim: true, skip_empty_lines: true });
+
+            for (let record of records) {
+                let [title, artist] = record;
                 songs.push({ title, artist, searchable: { title: this.normalizeSearch(title), artist: this.normalizeSearch(artist) }});
             }
 
             // remove header
             songs.shift();
+
+            // Sort songs by artist
+            songs.sort((a, b) => a.artist.localeCompare(b.artist));
 
             this.setSongs(songs);
 
