@@ -19,7 +19,7 @@ export class SearchCommand implements Command {
     public async execute(intr: ChatInputCommandInteraction, data: EventData): Promise<void> {
         let args = {
             query: intr.options.getString(Lang.getRef('arguments.query', data.lang)),
-            type: intr.options.getString(Lang.getRef('arguments.type', data.lang)) as SearchType,
+            type: intr.options.getString(Lang.getRef('arguments.type', data.lang)) as 'title' | 'artist' | 'all' | undefined,
         };
 
         Logger.info(`Searching for ${args.query} by ${args.type}...`);
@@ -29,17 +29,17 @@ export class SearchCommand implements Command {
         let matches: Song[];
 
         switch (args.type) {
-            case SearchType.TITLE: {
+            case 'title': {
                 matches = Content.titleSearchSongs(args.query);
                 searchType = 'title';
                 break;
             }
-            case SearchType.ARTIST: {
+            case 'artist': {
                 matches = Content.artistSearchSongs(args.query);
                 searchType = 'artist';
                 break;
             }
-            case SearchType.ALL: {
+            case 'all': {
                 matches = Content.allSearchSongs(args.query);
                 searchType = 'all';
                 break;
