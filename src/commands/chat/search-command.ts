@@ -8,7 +8,6 @@ import { InteractionUtils } from '../../utils/index.js';
 import { Command, CommandDeferType } from '../index.js';
 import { SearchType } from '../../enums/search-type.js';
 import { Content, Song } from '../../models/content.js';
-import { match } from 'assert';
 import { PageUtils } from '../../utils/page-utils.js';
 
 export class SearchCommand implements Command {
@@ -50,6 +49,7 @@ export class SearchCommand implements Command {
 
         if (matches.length === 0) {
             embeds[0] = Lang.getEmbed('displayEmbeds.noResults', data.lang);
+            await InteractionUtils.send(intr, embeds[0]);
         } else {
             let embedIndex = 0;
             embeds[embedIndex] = Lang.getEmbed('displayEmbeds.searchResults', data.lang);
