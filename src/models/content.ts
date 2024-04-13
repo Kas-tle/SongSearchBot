@@ -67,8 +67,6 @@ export class Content {
 
             let text = await res.text();
 
-            Logger.info(`Text: ${text}`);
-
             const records: [string, string][] = parse(text, { trim: true, skip_empty_lines: true });
 
             for (let record of records) {
