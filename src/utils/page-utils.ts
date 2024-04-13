@@ -11,7 +11,7 @@ export class PageUtils {
     constructor(
         embeds: EmbedBuilder[],
         intr: CommandInteraction,
-        time: number = 1000 * 60 * 5 // 5 minutes
+        time: number = 1000 * 60 * 10 // 10 minutes
     ) {
         this.pages = {};
         this.embeds = embeds;
@@ -33,25 +33,31 @@ export class PageUtils {
 
         this.intr.fetchReply().then((message) => {
             message.createMessageComponentCollector<ComponentType.Button>(this.collectorOps)
-                .on('collect', (i: ButtonInteraction<CacheType>) => this.handleInteraction(i));
+                .on('collect', (i: ButtonInteraction<CacheType>) => this.handleInteraction(i))
+                .on('end', () => { 
+                    this.intr.editReply({
+                        embeds: [this.embeds[this.pages[this.user.id]]],
+                        components: [this.getRow(this.user.id, true)],
+                    });
+                });
         });
     }
 
-    private getRow(id: string) {
+    private getRow(id: string, disable: boolean = false) {
         const row = new ActionRowBuilder<ButtonBuilder>()
             .addComponents(
                 new ButtonBuilder()
                     .setCustomId('prev_page')
                     .setEmoji('⏮️')
                     .setStyle(ButtonStyle.Secondary)
-                    .setDisabled(this.pages[id] === 0),
+                    .setDisabled(disable ? true : this.pages[id] === 0),
             )
             .addComponents(
                 new ButtonBuilder()
                     .setCustomId('next_page')
                     .setEmoji('⏭️')
                     .setStyle(ButtonStyle.Secondary)
-                    .setDisabled(this.pages[id] === this.embeds.length - 1)
+                    .setDisabled(disable ? true : this.pages[id] === this.embeds.length - 1)
             );
         return row;
     }

@@ -23,6 +23,7 @@ export class SearchCommand implements Command {
         };
 
         Logger.info(`Searching for ${args.query} by ${args.type}...`);
+        let searchType = '';
 
         const embeds: EmbedBuilder[] = [];
         let matches: Song[];
@@ -30,19 +31,22 @@ export class SearchCommand implements Command {
         switch (args.type) {
             case SearchType.TITLE: {
                 matches = Content.titleSearchSongs(args.query);
+                searchType = 'title';
                 break;
             }
             case SearchType.ARTIST: {
                 matches = Content.artistSearchSongs(args.query);
+                searchType = 'artist';
                 break;
             }
             case SearchType.ALL: {
                 matches = Content.allSearchSongs(args.query);
+                searchType = 'all';
                 break;
             }
             default: {
-                args.type = SearchType.ALL;
                 matches = Content.allSearchSongs(args.query);
+                searchType = 'all';
                 break;
             }
         }
@@ -104,11 +108,14 @@ export class SearchCommand implements Command {
             if (embeds.length > 1) {
                 for (let i = 0; i < embeds.length; i++) {
                     embeds[i].setFooter({
-                        text: `(${i + 1}/${embeds.length}) • query=${args.query} • type=${args.type.toLowerCase()} • songs=${matches.length} • artists=${results.size}`,
+                        text: `(${i + 1}/${embeds.length}) • query=${args.query} • type=${searchType} • songs=${matches.length} • artists=${results.size}`,
                     });
                 }
                 new PageUtils(embeds, intr);
             } else {
+                embeds[0].setFooter({
+                    text: `(1/1) query=${args.query} • type=${searchType} • songs=${matches.length} • artists=${results.size}`,
+                });
                 await InteractionUtils.send(intr, embeds[0]);
             }
         }
